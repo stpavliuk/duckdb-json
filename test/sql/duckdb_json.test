@@ -1,0 +1,23 @@
+# name: test/sql/duckdb_json.test
+# description: test duckdb_json extension
+# group: [sql]
+
+# Before we load the extension, this will fail
+statement error
+SELECT duckdb_json('Sam');
+----
+Catalog Error: Scalar Function with name duckdb_json does not exist!
+
+# Require statement will ensure this test is run with this extension loaded
+require duckdb_json
+
+# Confirm the extension works
+query I
+SELECT duckdb_json('Sam');
+----
+SSS Sam 🐥
+
+query I
+SELECT duckdb_json_openssl_version('Michael') ILIKE 'DuckdbJson Michael, my linked OpenSSL version is OpenSSL%';
+----
+true
